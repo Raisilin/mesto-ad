@@ -9,6 +9,21 @@
 import { initialCards } from "./cards.js";
 import { createCardElement, deleteCard, likeCard } from "./components/card.js";
 import { openModalWindow, closeModalWindow, setCloseModalWindowEventListeners } from "./components/modal.js";
+import { enableValidation, clearValidation } from "./components/validation.js";
+
+// Создание объекта с настройками валидации
+const validationSettings = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
+};
+
+// включение валидации вызовом enableValidation
+// все настройки передаются при вызове
+enableValidation(validationSettings); 
 
 // DOM узлы
 const placesWrap = document.querySelector(".places__list");
@@ -85,16 +100,19 @@ openProfileFormButton.addEventListener("click", () => {
   profileTitleInput.value = profileTitle.textContent;
   profileDescriptionInput.value = profileDescription.textContent;
   openModalWindow(profileFormModalWindow);
+  clearValidation(profileForm, validationSettings);
 });
 
 profileAvatar.addEventListener("click", () => {
   avatarForm.reset();
   openModalWindow(avatarFormModalWindow);
+  clearValidation(avatarForm, validationSettings);
 });
 
 openCardFormButton.addEventListener("click", () => {
   cardForm.reset();
   openModalWindow(cardFormModalWindow);
+  clearValidation(cardForm, validationSettings);
 });
 
 // отображение карточек
@@ -113,3 +131,4 @@ const allPopups = document.querySelectorAll(".popup");
 allPopups.forEach((popup) => {
   setCloseModalWindowEventListeners(popup);
 });
+
